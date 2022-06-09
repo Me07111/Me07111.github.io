@@ -1,52 +1,53 @@
-//generation test
+var muds = []
+var walls = []
+var wotahs = []
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  background(220);
+  background(0,255,0);
   generateMap()
 }
 
 function draw() {
 }
 
-function fieldDisplay(x,y,type){
+function fieldDisplay(x,y,type,opMin){
    x = x * 10;
     y = y * 10;
+  let diam = (round(random(2,100)));
+  let rndOpMin = opMin;
+  let rColor = [random(0,255),random(0,255),random(0,255),random(100-diam,255-100-diam + 50)]
     switch (type) {
       //grass
       case 0:
-        let grassColor = round(random(100,180))
         push();
-        fill(0, grassColor, 0);
-        strokeWeight(0.5);
-        rect(x, y, 10);
+        fill(rColor);
+        strokeWeight(0);
+        circle(x, y, diam);
         push();
         break;
       //wall
       case 1:
-        let wallColor = round(random(90,150))
         push();
-        fill(wallColor);
-        strokeWeight(0.5);
-        rect(x, y, 10);
+        fill(rColor);
+        strokeWeight(0);
+        circle(x, y, diam);
         push();
         break;
       //players planned move
       case 2:
-        let wotahColor = round(random(100,255))
-        let wotahGr = round(random(0,100))
         push();
-        fill(0, wotahGr, wotahColor);
-        strokeWeight(0.5);
-        rect(x, y, 10);
+        fill(rColor);
+        strokeWeight(0);
+        circle(x, y, diam);
         push();
         break;
         //mud
         case 3:
-        let mudColor = round(random(30,70))
         push();
-        fill(mudColor, 13, 13, 200);
-        strokeWeight(0.5);
-        rect(x, y, 10);
+        fill(rColor);
+        strokeWeight(0);
+        circle(x, y, diam);
         push();
         break;
       default:
@@ -70,7 +71,7 @@ function randomWall(x,y){
         for(let i = 0;i < wallLength; i++){
           x += xPlus;
           y += yPlus;
-          fieldDisplay(x,y,1)
+          walls.push([x,y])
         }
         break;
         
@@ -81,7 +82,7 @@ function randomWall(x,y){
         for(let i = 0;i < wallLength; i++){
           x += xPlus;
           y += yPlus;
-          fieldDisplay(x,y,1)
+          walls.push([x,y])
         }
         break;
         
@@ -92,7 +93,7 @@ function randomWall(x,y){
         for(let i = 0;i < wallLength; i++){
           x += xPlus;
           y += yPlus;
-          fieldDisplay(x,y,1)
+          walls.push([x,y])
         }
         break;
         
@@ -103,7 +104,7 @@ function randomWall(x,y){
         for(let i = 0;i < wallLength; i++){
           x += xPlus;
           y += yPlus;
-          fieldDisplay(x,y,1)
+          walls.push([x,y])
         }
         break;
         default:
@@ -112,40 +113,52 @@ function randomWall(x,y){
     }
 }
 
-function generateMap1(){
-  walls = []
-    for (let i = 0; i < windowWidth/10*10; i++) {
-      for (let j = 0; j < windowHeight/10*10; j++) {
-        if(round(random(1,25)) == 1){
-        fieldDisplay(i, j, 1);
-          fieldDisplay(i,j,1)
-          randomWall(i,j)
-        } else {
-           fieldDisplay(i, j, 0)
-     } 
-    }
-  }
-}
 
 function generateMap(){
+     muds = []
+     walls = []
+     wotahs = []
+  background(0,200,0)
+let randOp = random(10,150)
     let rand;
     for (let i = 0; i < windowWidth/10; i++) {
       for (let j = 0; j < windowHeight/10; j++) {
         rand = round(random(1, 25))
         if (rand == 1) {
+          walls.push([i,j])
           randomWall(i, j);
         } else if (rand == 2) {
-          fieldDisplay(i, j, 3)
+          wotahs.push([i, j])
         } else if(rand == 3) {
-           fieldDisplay(i, j, 2)
+           muds.push([i, j])
         }
         else{
-          fieldDisplay(i, j, 0);
+          fieldDisplay(i, j, 0,randOp);
         }
       }
     }
+  console.log(walls)
+  displayNotGrass()
 }
 
 function mousePressed(){
   generateMap()
+}
+
+function displayNotGrass(){
+  let randOp = random(10,150)
+  for(let i = 0; i < walls.length;i++){
+    let wall = walls[i]
+    fieldDisplay(wall[0],wall[1],1,randOp)
+  }
+  
+  for(let i = 0; i < muds.length;i++){
+    let mud = muds[i]
+    fieldDisplay(mud[0],mud[1],3,randOp)
+  }
+  
+  for(let i = 0; i < wotahs.length;i++){
+    let wotah = wotahs[i]
+    fieldDisplay(wotah[0],wotah[1],2,randOp)
+  }
 }
