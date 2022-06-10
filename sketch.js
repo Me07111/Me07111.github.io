@@ -137,7 +137,7 @@ let randOp = random(10,150)
         }
       }
     }
-  console.log(walls)
+
   displayNotGrass()
 }
 
