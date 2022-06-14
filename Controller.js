@@ -1,6 +1,6 @@
 class Controller {
   constructor(pGp, pGp2) {
-    this.player1 = new Player("yellow", 40, 25, [245, 237, 15], 100, true, 7);
+    this.player1 = new Player("yellow", 3, 25, [245, 237, 15], 100, true, 7);
     this.player2 = new Player("red", 47, 25, [247, 5, 5], 100, false, 7);
     this.okButton = new My_Button(500, 0, 220, [5, 239, 50], 24, "End Turn", [
       100,
