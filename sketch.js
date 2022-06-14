@@ -1,164 +1,104 @@
-var muds = []
-var walls = []
-var wotahs = []
+var globalTime = 0;
+var isShooting = false;
+var isOk = false;
+var finomitas = 300;
+var gp;
+var gp2;
+var gp3;
+var gp4;
+var walls = [];
+var muds = [];
+var grasses = [];
+var grassColors = [];
+var wallColors = [];
+var mudColors = [];
+var inMenu = true;
+controller = new Controller();
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
-  background(0,255,0);
-  generateMap()
+  createCanvas(600, 500);
+  gp2 = createGraphics(600, 500);
+  gp = createGraphics(500, 500);
+  gp3 = createGraphics(500, 500);
+  gp4 = createGraphics(500, 500);
+  controller = new Controller(gp, gp2);
+  mainMenu = new MainMenu();
+  background(220);
+  //console.log("setup ended well!");
 }
 
 function draw() {
-}
-
-function fieldDisplay(x,y,type,opMin){
-   x = x * 10;
-    y = y * 10;
-  let diam = (round(random(2,100)));
-  let rndOpMin = opMin;
-  let rColor = [random(0,255),random(0,255),random(0,255),random(100-diam,255-100-diam + 50)]
-    switch (type) {
-      //grass
-      case 0:
-        push();
-        fill(rColor);
-        strokeWeight(0);
-        circle(x, y, diam);
-        push();
-        break;
-      //wall
-      case 1:
-        push();
-        fill(rColor);
-        strokeWeight(0);
-        circle(x, y, diam);
-        push();
-        break;
-      //players planned move
-      case 2:
-        push();
-        fill(rColor);
-        strokeWeight(0);
-        circle(x, y, diam);
-        push();
-        break;
-        //mud
-        case 3:
-        push();
-        fill(rColor);
-        strokeWeight(0);
-        circle(x, y, diam);
-        push();
-        break;
-      default:
-        console.log("something is wrong in controller.fieldDisplay");
-        break;
+  if (inMenu) {
+    mainMenu.display();
+  } else {
+    gp.clear();
+    gp4.clear();
+    controller.display();
+    image(gp2, 0, 0);
+    image(gp, 0, 0);
+    image(gp3, 0, 0);
+    image(gp4, 0, 0);
+    globalTime++;
+    if (globalTime == 300) {
+      globalTime = 0;
     }
-}
-  
-function randomWall(x,y){
-  let type = round(random(0,3))
-  let xPlus;
-  let yPlus;
-  let wallLenght;
-  switch(type)
-    {
-        
-        case 0:
-        xPlus = 0;
-        yPlus = -1;
-        wallLength =  random(1,5);
-        for(let i = 0;i < wallLength; i++){
-          x += xPlus;
-          y += yPlus;
-          walls.push([x,y])
-        }
-        break;
-        
-        case 1:
-        xPlus = 0;
-        yPlus = 1;
-        wallLength =  random(1,5);
-        for(let i = 0;i < wallLength; i++){
-          x += xPlus;
-          y += yPlus;
-          walls.push([x,y])
-        }
-        break;
-        
-        case 2:
-        xPlus = -1;
-        yPlus = -1;
-        wallLength =  random(1,5);
-        for(let i = 0;i < wallLength; i++){
-          x += xPlus;
-          y += yPlus;
-          walls.push([x,y])
-        }
-        break;
-        
-        case 3: 
-        xPlus = -1;
-        yPlus = 1;
-        wallLength =  random(1,5);
-        for(let i = 0;i < wallLength; i++){
-          x += xPlus;
-          y += yPlus;
-          walls.push([x,y])
-        }
-        break;
-        default:
-        console.log("something is wrong")
-        break;
+
+    if (isOk == true) {
+      controller.endTurn();
+    } else {
+      //console.log(controller.getOnTurn().plannedMoves)
     }
+  }
 }
 
-
-function generateMap(){
-     muds = []
-     walls = []
-     wotahs = []
-  background(0,200,0)
-let randOp = random(10,150)
-    let rand;
-    for (let i = 0; i < windowWidth/10; i++) {
-      for (let j = 0; j < windowHeight/10; j++) {
-        rand = round(random(1, 25))
-        if (rand == 1) {
-          walls.push([i,j])
-          randomWall(i, j);
-        } else if (rand == 2) {
-          wotahs.push([i, j])
-        } else if(rand == 3) {
-           muds.push([i, j])
-        }
-        else{
-          fieldDisplay(i, j, 0,randOp);
-        }
+function keyPressed() {
+  if (!isShooting) {
+    if (keyCode === ENTER) {
+      if (inMenu) {
+        mainMenu.apply();
+      } else {
+        controller.endTurn();
       }
     }
 
-  displayNotGrass()
+    if (keyCode === ESCAPE) {
+      if (!inMenu) {
+        controller.restart();
+      } else {
+        mainMenu.reset();
+      }
+    }
+  }
 }
 
-function mousePressed(){
-  generateMap()
-}
+function mousePressed() {
+  if (!inMenu) {
+    if (!isShooting) {
+      //controller.endTurn()
+      //controller.getNotOnTurn().health -= 10
+      //console.log( controller.getNotOnTurn().health)
+      let cords = controller.pixToCord(mouseX, mouseY);
+      //buttons
+      controller.okButton.checker(mouseX, mouseY, controller.setOk);
+      controller.shootButton.checker(mouseX, mouseY, controller.setShooting);
+      controller.resetButton.checker(
+        mouseX,
+        mouseY,
+        controller.resetPlayerMoves
+      );
 
-function displayNotGrass(){
-  let randOp = random(10,150)
-  for(let i = 0; i < walls.length;i++){
-    let wall = walls[i]
-    fieldDisplay(wall[0],wall[1],1,randOp)
-  }
-  
-  for(let i = 0; i < muds.length;i++){
-    let mud = muds[i]
-    fieldDisplay(mud[0],mud[1],3,randOp)
-  }
-  
-  for(let i = 0; i < wotahs.length;i++){
-    let wotah = wotahs[i]
-    fieldDisplay(wotah[0],wotah[1],2,randOp)
+      controller.restartButton.checker(mouseX, mouseY, controller.restart);
+      controller.backButton.checker(mouseX, mouseY, controller.back);
+      //input to player
+      if (mouseX < 500) {
+        if (controller.getOnTurn().wantsToShoot) {
+          controller.shot(cords);
+        } else {
+          controller.getOnTurn().plannedInput(cords);
+        }
+      }
+    }
+  } else {
+    mainMenu.applyButton.checker(mouseX, mouseY, mainMenu.apply);
   }
 }
