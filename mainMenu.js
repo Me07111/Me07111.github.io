@@ -1,23 +1,25 @@
 class MainMenu{
   constructor()
- { this.inp1 = createInput('');
-  this.inp1.position(100,215)
+ {
+  let start = windowWidth/2 - 300;
+  this.inp1 = createInput(''); 
+ this.inp1.position(start + 100,215)
   this.inp1.input(this.setPlayer1Name)
   this.inp2 = createInput('');
-  this.inp2.position(380,215)
+  this.inp2.position(start + 380,215)
   this.colorPicker1 = createColorPicker('#f8fc03');
-  this.colorPicker1.position(147,240)
+  this.colorPicker1.position(start + 147,240)
   this.colorPicker2 = createColorPicker('#fc0303');
-  this.colorPicker2.position(430,240)
+  this.colorPicker2.position(start + 430,240)
   this.inp2.input(this.setPlayer2Name)
   this.player1Name = "player 1";
   this.player2Name = "player 2";
   this.mudCheckbox = createCheckbox('Generate Mud?', true);
-  this.mudCheckbox.position(235,370)
+  this.mudCheckbox.position(start + 235,370)
   this.applyButton = new MyCanvas_Button( 250,420,[0,255,0],0,45,"Start",[100,45]);
   
   this.sel1 = createSelect();
-  this.sel1.position(125, 280);
+  this.sel1.position(start + 125, 280);
   this.sel1.option("rectangle");
   this.sel1.option("circle");
   this.sel1.option('triangle');
@@ -26,7 +28,7 @@ class MainMenu{
   this.sel1.selected('rectangle');
   
   this.sel2 = createSelect();
-  this.sel2.position(407, 280);
+  this.sel2.position(start + 407, 280);
   this.sel2.option("rectangle");
   this.sel2.option("circle");
   this.sel2.option("triangle");
