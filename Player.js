@@ -11,7 +11,7 @@ class Player {
     this.wantsToshoot = false;
     this.ghostX = pX;
     this.ghostY = pY;
-    this.lastMinus = 0;
+    this.lastMinuses = [];
     this.damage = 20;
   }
   display(shape) {
@@ -74,7 +74,6 @@ class Player {
   plannedInput(cords) {
     let plannedAction = cords;
     if (this.actionPoints > 0) {
-      
       // walking from mud
       if (this.canReach(plannedAction) && !this.wantsToShoot) {
         if(controller.isMud([this.ghostX,this.ghostY])){
@@ -82,7 +81,7 @@ class Player {
             plannedAction.push(0);
         this.plannedMoves.push(plannedAction);
         this.actionPoints-= 2;
-        this.lastMinus = 2;
+        this.lastMinuses.push(2);
         this.ghostX = plannedAction[0];
         this.ghostY = plannedAction[1];
         controller.displayPlannedMove(plannedAction)
@@ -92,7 +91,7 @@ class Player {
         {plannedAction.push(0);
         this.plannedMoves.push(plannedAction);
         this.actionPoints--;
-        this.lastMinus = 1;
+        this.lastMinuses.push(1);
         this.ghostX = plannedAction[0];
         this.ghostY = plannedAction[1];
         controller.displayPlannedMove(plannedAction)}
@@ -106,7 +105,7 @@ class Player {
           this.plannedMoves.push(plannedAction);
           controller.displayPlannedMove(plannedAction)
           this.actionPoints -= minusPoints;
-          this.lastMinus = minusPoints;
+          this.lastMinuses.push(minusPoints);
         }
       }
       //else{console.log("shit")}
@@ -114,6 +113,8 @@ class Player {
   }
   
   canReach(cords) {
+    if(!this.isInPlanned(cords))  
+    {
       if (
         (abs(this.ghostX - cords[0]) == 1 && this.ghostY - cords[1] == 0) ||
         (abs(this.ghostY - cords[1]) == 1 && this.ghostX - cords[0] == 0)
@@ -124,16 +125,49 @@ class Player {
         { 
           return false
         }
-      }
+      }}
     }
   
   takeDamage(damage){
     this.health -= damage;
-    console.log(this.name +" " +this.health)
     if(this.health <= 0){ 
       this.health = 0
       console.log(this.name +" died!")
     }
   }
   
+  isInPlanned(cords){
+    let move;
+    for(let i = 0; i <this.plannedMoves.length;i++){
+      move = this.plannedMoves[i]
+      if(cords[0] == move[0] && cords[1] == move[1]){
+        return true
+      }
+    }
+    return false
+  }
+  
+  planByDir(dir){
+    switch(dir){
+      case "up":
+        this.plannedInput([this.ghostX,this.ghostY - 1])
+        break;
+        
+        case "down":
+        this.plannedInput([this.ghostX,this.ghostY + 1])
+        break;
+        
+        case "left":
+        this.plannedInput([this.ghostX -1,this.ghostY])
+        break;
+        
+        case "right":
+        this.plannedInput([this.ghostX +1,this.ghostY])
+        break;
+        
+      default:
+        console.log("something is wrong in player.planByDir")
+        break;
+    }
+  }
   }

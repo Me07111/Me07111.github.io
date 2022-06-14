@@ -48,6 +48,17 @@ function draw() {
     } else {
       //console.log(controller.getOnTurn().plannedMoves)
     }
+    
+    if (mouseIsPressed === true) {
+      let cords = controller.pixToCord(mouseX, mouseY);
+       if (mouseX < 500) {
+        if (controller.getOnTurn().wantsToShoot) {
+          controller.shot(cords);
+        } else {
+          controller.getOnTurn().plannedInput(cords);
+        }
+      }
+  }
   }
 }
 
@@ -68,6 +79,28 @@ function keyPressed() {
         mainMenu.reset();
       }
     }
+  }
+  
+  if(!inMenu){
+    if(keyCode === BACKSPACE){
+      controller.back()
+    }
+    //W
+    if(keyCode === 87 || keyCode === UP_ARROW){
+       controller.getOnTurn().planByDir("up")
+    }
+    //S
+    if (keyCode == 83 || keyCode === DOWN_ARROW){
+        controller.getOnTurn().planByDir("down")
+        }
+    //D
+    if (keyCode == 68 || keyCode === RIGHT_ARROW){
+        controller.getOnTurn().planByDir("right")
+        }
+    //A
+    if (keyCode == 65 || keyCode === LEFT_ARROW){
+        controller.getOnTurn().planByDir("left")
+        }
   }
 }
 

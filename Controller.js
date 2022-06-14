@@ -1,6 +1,6 @@
 class Controller {
   constructor(pGp, pGp2) {
-    this.player1 = new Player("yellow", 3, 25, [245, 237, 15], 100, true, 7);
+    this.player1 = new Player("yellow", 40, 25, [245, 237, 15], 100, true, 7);
     this.player2 = new Player("red", 47, 25, [247, 5, 5], 100, false, 7);
     this.okButton = new My_Button(500, 0, 220, [5, 239, 50], 24, "End Turn", [
       100,
@@ -371,25 +371,28 @@ class Controller {
     gp2.pop();
   }
 
- /* back() {
-    console.log("back is broken");
+ back() {
+   let lastMove;
     let player = controller.getOnTurn()
     if(player.plannedMoves.length > 0)
- {    let removed = player.plannedMoves.pop();
+ {    
+   let removed = player.plannedMoves.pop();
       controller.gameBoardDisplayWithNoWalls();
-      controller.displayWalls();
+   controller.displayMuds();
       controller.displayAllPlannedMoves();
-      let movesReverse = player.plannedMoves.reverse();
-      //let lastMove = [player.x,player.y]
-  let lastMove = movesReverse.find(controller.isMove)
-  console.log(movesReverse.find(controller.isMove))
-
-    console.log(player.plannedMoves)
+   if(player.plannedMoves.length!= 0)
+      { 
+      let movesReverse = player.plannedMoves.slice().reverse();
+      lastMove = movesReverse.find(controller.isMove)
+      } else{
+        lastMove = [player.x,player.y]
+      }
+   
     player.ghostX = lastMove[0]
     player.ghostY = lastMove[1]   
-    player.actionPoints += player.lastMinus;
+    player.actionPoints += player.lastMinuses.pop();
  } 
-  }*/
+  }
 
   isMove(x) {
     if (x[2] == 0) {
