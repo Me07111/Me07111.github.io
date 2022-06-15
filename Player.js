@@ -28,7 +28,7 @@ class Player {
     gp4.pop();
     break;
       case "circle":
-        gp.push();
+    gp4.push();
     gp4.fill(this.color);
     gp4.circle(
       controller.cordToPix(this.x),
@@ -38,7 +38,7 @@ class Player {
     gp4.pop();
     break;
       case "triangle":
-        gp.push();
+    gp4.push();
     gp4.fill(this.color);
     gp4.triangle(controller.cordToPix(this.x),controller.cordToPix(this.y) - 5,controller.cordToPix(this.x)+5,controller.cordToPix(this.y) + 5,controller.cordToPix(this.x)-5,controller.cordToPix(this.y) + 5)
     gp4.pop();

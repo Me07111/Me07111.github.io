@@ -96,10 +96,10 @@ class Controller {
   display() {
     this.player1.display(this.player1shape);
     this.player2.display(this.player2shape);
-    this.okButton.display();
-    this.shootButton.display();
-    this.resetButton.display();
-    this.restartButton.display();
+    this.okButton.display(gp2);
+    this.shootButton.display(gp2);
+    this.resetButton.display(gp2);
+    this.restartButton.display(gp2);
     if (!isShooting) {
       this.playerHealthBar.display();
       this.playerHealthBar.value = this.getOnTurn().health;
@@ -110,7 +110,7 @@ class Controller {
     this.enemyHealthBar.color = this.getNotOnTurn().color;
     this.enemyHealthBar.name = this.getNotOnTurn().name + "\n health";
     this.actionPointsDisplay();
-    this.backButton.display();
+    this.backButton.display(gp2);
     this.onTurnDisplay();
     if (this.getOnTurn().wantsToShoot == true) {
       this.ShootUIDisplay();
@@ -334,6 +334,7 @@ class Controller {
     player.ghostX = player.x;
     player.ghostY = player.y;
     controller.gameBoardDisplayWithNoWalls();
+    controller.displayMuds()
   }
 
   onTurnDisplay() {
@@ -546,7 +547,6 @@ class Controller {
     globalTime = 0;
     isShooting = false;
     isOk = false;
-    finomitas = 300;
     walls = [];
     muds = [];
     gp3.clear();
@@ -668,4 +668,6 @@ class Controller {
       return targetCords;
     }
   }
+  
+  
 }

@@ -1,7 +1,7 @@
 var globalTime = 0;
 var isShooting = false;
 var isOk = false;
-var finomitas = 300;
+const finomitas = 300;
 var gp;
 var gp2;
 var gp3;
@@ -10,7 +10,6 @@ var walls = [];
 var muds = [];
 var grasses = [];
 var grassColors = [];
-var wallColors = [];
 var mudColors = [];
 var inMenu = true;
 controller = new Controller();
@@ -22,6 +21,7 @@ function setup() {
   gp3 = createGraphics(500, 500);
   gp4 = createGraphics(500, 500);
   controller = new Controller(gp, gp2);
+  toMenuButton = new My_Button(10,10,[255,20,10],0,18,"quit to menu",[112,36])
   mainMenu = new MainMenu();
   background(220);
   //console.log("setup ended well!");
@@ -30,9 +30,12 @@ function setup() {
 function draw() {
   if (inMenu) {
     mainMenu.display();
+    mainMenu.previewDisplay(183,350,mainMenu.colorPicker1.color(),mainMenu.sel1.value())
+    mainMenu.previewDisplay(465,350,mainMenu.colorPicker2.color(),mainMenu.sel2.value())
   } else {
     gp.clear();
     gp4.clear();
+    toMenuButton.display(gp3)
     controller.display();
     image(gp2, 0, 0);
     image(gp, 0, 0);
@@ -122,6 +125,7 @@ function mousePressed() {
 
       controller.restartButton.checker(mouseX, mouseY, controller.restart);
       controller.backButton.checker(mouseX, mouseY, controller.back);
+      toMenuButton.checker(mouseX,mouseY,toMenu)
       //input to player
       if (mouseX < 500) {
         if (controller.getOnTurn().wantsToShoot) {
@@ -133,5 +137,29 @@ function mousePressed() {
     }
   } else {
     mainMenu.applyButton.checker(mouseX, mouseY, mainMenu.apply);
+    mainMenu.player1ResetButton.checker(mouseX, mouseY,mainMenu.resetP1)
+    mainMenu.player2ResetButton.checker(mouseX, mouseY,mainMenu.resetP2)
   }
 }
+
+function toMenu(){
+inMenu = true;
+globalTime = 0;
+isShooting = false;
+isOk = false;
+walls = [];
+muds = [];
+grasses = [];
+grassColors = [];
+mudColors = []
+controller = new Controller();
+createCanvas(600, 500);
+gp2 = createGraphics(600, 500);
+gp = createGraphics(500, 500);
+gp3 = createGraphics(500, 500);
+gp4 = createGraphics(500, 500);
+controller = new Controller(gp, gp2);
+mainMenu = new MainMenu();
+background(220);
+inMenu = true;
+  }

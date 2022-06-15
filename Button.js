@@ -18,18 +18,31 @@ class My_Button {
     this.size = pSize;
   }
 
-  display() {
-    gp2.push();
-    gp2.fill(this.color);
-    gp2.rect(this.x, this.y, this.size[0], this.size[1]);
-    gp2.pop();
-    gp2.push();
-    gp2.fill(this.textColor);
-    gp2.textSize(this.textSize);
-    gp2.textAlign(CENTER,CENTER);
-    gp2.text(this.text, this.x + this.size[0] / 2, this.y + this.size[1] / 2);
-    gp2.pop();
-  }
+  display(graphics) {
+    if(graphics == "canvas"){
+       push();
+    fill(this.color);
+    rect(this.x, this.y, this.size[0], this.size[1]);
+    pop();
+    push();
+    fill(this.textColor);
+    textSize(this.textSize);
+    textAlign(CENTER,CENTER);
+    text(this.text, this.x + this.size[0] / 2, this.y + this.size[1] / 2);
+    pop();
+       } else {
+    graphics.push();
+    graphics.fill(this.color);
+    graphics.rect(this.x, this.y, this.size[0], this.size[1]);
+    graphics.pop();
+    graphics.push();
+    graphics.fill(this.textColor);
+    graphics.textSize(this.textSize);
+    graphics.textAlign(CENTER,CENTER);
+    graphics.text(this.text, this.x + this.size[0] / 2, this.y + this.size[1] / 2);
+    graphics.pop();
+ }  
+}
 
   checker(pX, pY, func) {
     if (
