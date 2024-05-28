@@ -32,6 +32,7 @@ document.getElementById('restart-btn').addEventListener('click', () => {
   // Scroll to top of the main content area
   document.querySelector('.main-content').scrollTop = 0;
   document.getElementById('results').style.visibility = 'hidden'
+  wasAnalyzed = false
 });
 
 
