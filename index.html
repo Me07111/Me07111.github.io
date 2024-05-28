@@ -1,19 +1,27 @@
-<!DOCTYPE html><html lang="en"><head>
-    <script src="p5.js"></script>
-    <script src="p5.sound.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <meta charset="utf-8">
-
-  </head>
-  <body>
-    <main>
-    </main>
-    <script src="Button.js"></script>
-    <script src="mainMenu.js"></script>
-    <script src="uiBar.js"></script>
-    <script src="Player.js"></script>
-    <script src="Controller.js"></script>
-    <script src="sketch.js"></script>
-  
-
-</body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Analysis</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="top-bar">
+        <h1>Rap Elemző</h1>
+    </div>
+    <div class="container">
+        <div class="main-content" id="main-content">
+            <textarea id="text-input" placeholder="Enter your text here..." ></textarea>
+            <div id="results"></div>
+        </div>
+        <div class="sidebar",z-index=-1>
+            <button id="analyze-btn">elemzés</button>
+            <button id="restart-btn">újraindítás</button>
+            <p id="stats">Statisztikák</p>
+        </div>
+    </div>
+    <div id="results" class="hidden"></div>
+    <script src="script.js"></script>
+</body>
+</html>
