@@ -281,6 +281,7 @@ function logResults(results, stats) {
               let sylSpan = document.createElement('span');
               
               if (syl[0] === 'undefined') {
+                  sylSpan.style.color = "black";
                   sylSpan.style.backgroundColor = 'transparent';
                   sylSpan.textContent = '\n';
                   undefinedLine = true;
@@ -290,10 +291,12 @@ function logResults(results, stats) {
               if (syl[2] === true) {
                   if (usedSyllables.indexOf(syl[1]) !== -1) {
                       let index = usedSyllables.indexOf(syl[1]);
+                      sylSpan.style.color = "black";
                       sylSpan.style.backgroundColor = colors[index];
                   } else {
                       usedSyllables.push(syl[1]);
                       let index = usedSyllables.indexOf(syl[1]);
+                      sylSpan.style.color = "black";
                       sylSpan.style.backgroundColor = colors[index];
                   }
                   sylSpan.textContent = syl[0];
