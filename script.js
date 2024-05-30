@@ -14,7 +14,7 @@ const consonants = ["b","c","d","f","g","h","j","k","l","ly","m","n","p","s","r"
 // Event listener for the analyze button
 document.getElementById('analyze-btn').addEventListener('click', () => {
   if (wasAnalyzed == false) {
-    const inputText = document.getElementById('text-input').value;
+    const inputText = document.getElementById('text-input').replace(/[^a-zA-ZáÁéÉíÍóÓöÖőŐúÚüÜűŰ]/g, '');
     parseText(inputText);
     document.getElementById('results').style.visibility = 'visible'
     wasAnalyzed = true
