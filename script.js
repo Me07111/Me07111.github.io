@@ -14,7 +14,7 @@ const consonants = ["b","c","d","f","g","h","j","k","l","ly","m","n","p","s","r"
 // Event listener for the analyze button
 document.getElementById('analyze-btn').addEventListener('click', () => {
   if (wasAnalyzed == false) {
-    const inputText = document.getElementById('text-input').value.replace(/[^a-zA-ZáÁéÉíÍóÓöÖőŐúÚüÜűŰ\s\n]/g, '');
+    const inputText = document.getElementById('text-input').value.replace(/[^a-zA-ZáÁéÉíÍóÓöÖőŐúÚüÜűŰ\s\n]/g  , '');
     parseText(inputText);
     document.getElementById('results').style.visibility = 'visible'
     wasAnalyzed = true
@@ -44,6 +44,7 @@ function parseText(text){
   let rhymeLineDepth = 1
   let linesT = []
   let lines = []
+  let LinesAndSylables = []
   syllableCounts = []
   wordCounts = []
   detectEndRhymes = true
@@ -51,7 +52,8 @@ function parseText(text){
   detectInLineRhymes = true
   let sylPat = []
   let lineStarts = [0]
-  let pattern = new Map()
+  let patterns = []
+  let patternStrings = []
   let stats = new Map()
   stats.set("Rímeló szótagok",0)
   stats.set("szótagok",0)
@@ -69,6 +71,17 @@ function parseText(text){
     for (let j = 0; j < linesT[i].length; j++) {
       word = linesT[i][j]
       linesT[i][j] = toSyllables(word)
+    }
+  }
+
+  //making non word dependent array
+  for (let i = 0; i < linesT.length; i++) {
+    LinesAndSylables.push([])
+    for (let j = 0; j < linesT[i].length; j++) {
+      syllables = linesT[i][j]
+      syllables.forEach(syllable => {
+        LinesAndSylables[i].push(syllable)
+      });
     }
   }
 
@@ -121,18 +134,20 @@ function parseText(text){
     lineStarts.push(highlightPattern.length)
   }
   //detect beginning rhymes
-if(detectStartRhymes)
+  if(detectStartRhymes)
    {
+    let pattern = []
+    let patternString = ""
     for (let i = 0; i < sylPat.length; i++) {
     let line = sylPat[i] 
-    let pattern = []
-    let patternIndices = [] 
+    pattern = []
+    patternString = ""
     lineStarts.push(highlightPattern.length)
     let linesToCheck = []
-      for (let i = 1; i < rhymeLineDepth+1; i++) {
-        linesToCheck.push(i)
-        linesToCheck.push(-i)
-      }
+    for (let i = 1; i < rhymeLineDepth+1; i++) {
+      linesToCheck.push(i)
+      linesToCheck.push(-i)
+    }
     for (let j = 0; j < line.length; j++) {
       let syl = line[j]
       let doesRhyme = false
@@ -141,6 +156,10 @@ if(detectStartRhymes)
         if (((i + linesToCheck[b] < sylPat.length) && linesToCheck[b] > 0 || (i + linesToCheck[b] >= 0) && linesToCheck[b] < 0) && (syl === sylPat[i + linesToCheck[b]][j])) {
           doesRhyme = true
           highlightPattern[lineStarts[i] + j] = true;
+          pattern.push(syl)
+          if(LinesAndSylables[i][j] !== undefined){
+          patternString += LinesAndSylables[i][j]
+          }
           continue
         } else {
           toSlice.push(b)
@@ -154,14 +173,24 @@ if(detectStartRhymes)
           break;
         } 
     }
+    if(patterns.includes(pattern.toString())){
+      patternStrings[patterns.indexOf(pattern.toString())].push(patternString)
+    } else {
+      patterns.push(pattern.toString())
+      patternStrings.push([patternString])
+    }
   }
 }
   //detect end rhymes
-if(detectEndRhymes)
+  if(detectEndRhymes)
   {
+    let pattern = []
+    let patternString = ""
    for (let i = 0; i < sylPat.length; i++) {
    let line = sylPat[i].slice().reverse()
       lineStarts.push(highlightPattern.length)
+      pattern = []
+      patternString = ""
    let linesToCheck = []
      for (let i = 1; i < rhymeLineDepth+1; i++) {
        linesToCheck.push(i)
@@ -175,6 +204,11 @@ if(detectEndRhymes)
        if (((i + linesToCheck[b] < sylPat.length) && (linesToCheck[b] > 0 || ((i + linesToCheck[b] >= 0)) && linesToCheck[b] < 0)) && (syl === sylPat[i + linesToCheck[b]].slice().reverse()[j])) {
          doesRhyme = true
          highlightPattern[lineStarts[i]+(line.length-(j+1))] = true;
+         pattern.push(syl)
+         console.log(LinesAndSylables[i][line.length-j-1])
+         if(LinesAndSylables[i][line.length-j-1] !== undefined){
+         patternString += LinesAndSylables[i][line.length-j-1]
+         }
          continue
        } else {
          toSlice.push(b)
@@ -188,10 +222,16 @@ if(detectEndRhymes)
          break;
        } 
    }
+  if(patterns.includes(pattern.toString())){
+    patternStrings[patterns.indexOf(pattern.toString())].push(patternString)
+  } else {
+    patterns.push(pattern.toString())
+    patternStrings.push([patternString])
+  }
  }
 }
 //detect inline rhymes and all other rhymes that are not the end rhymes
-if(detectInLineRhymes)
+  if(detectInLineRhymes)
   {
     let starts = []
     let lines = []
@@ -214,6 +254,7 @@ if(detectInLineRhymes)
       let start = starts[i]
       let line = lines[i]
       let result = findPatterns(line,2,4).indices
+      let patterns = findPatterns(line,2,4).patterns
       //console.log(result)
       for (let j = 0; j < result.length; j++) {
         //console.log(start + result[j])
@@ -221,6 +262,9 @@ if(detectInLineRhymes)
       }
     }
   }
+
+  console.log(patterns)
+  console.log(patternStrings)
 
   //applying highlighting to the input of logResults
   let tInd = 0
