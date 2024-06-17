@@ -66,24 +66,38 @@ body {
     background-color: #333; /* Dark background */
     border-left: 1px solid #444; /* Dark gray border */
 }
+#stats{
+    background-color: #ffa500;
+    border: none;
+    border-radius: 20px;
+    text-align: center;
+    color: #000;
+}
 
 .btn-container {
     display: flex;
     flex-direction: column; /* Stack buttons vertically */
+    justify-content: center;
+    align-items: center;
 }
 
 #analyze-btn,
-#restart-btn {
+#restart-btn,
+#edit-btn {
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
     background-color: #4CAF50; /* Green */
     color: white;
-    border: none;
-    border-radius: 4px;
+    border:none;
+    border-radius: 130px;
     margin-bottom: 10px; /* Add space between buttons */
 }
 
 #restart-btn {
     background-color: #f44336; /* Red */
+}
+#edit-btn{
+    background-color: #ffa500;
+    color: #000;
 }

@@ -21,6 +21,21 @@ document.getElementById('analyze-btn').addEventListener('click', () => {
   }
 });
 
+//edit button
+document.getElementById('edit-btn').addEventListener('click', () => {
+  if (wasAnalyzed) {
+  document.getElementById('results').innerHTML = '';
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('text-input').style.display = 'block';
+  document.querySelector(".sidebar p").innerHTML = "Statisztikák"
+  // Scroll to top of the main content area
+  document.querySelector('.main-content').scrollTop = 0;
+  document.getElementById('results').style.visibility = 'hidden'
+  wasAnalyzed = false
+  document.getElementById('text-input').value = inputText;
+  }
+});
+
 // Event listener for the restart button
 document.getElementById('restart-btn').addEventListener('click', () => {
   // Clear the input and results
