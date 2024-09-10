@@ -101,3 +101,21 @@ body {
     background-color: #ffa500;
     color: #000;
 }
+.checkBoxContainer{
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically */
+    justify-content: center;
+    align-items: center;
+}
+#checkStartRhymes{
+    background-color: #ffa500;
+    color: #000;
+}
+#checkEndRhymes{
+    background-color: #ffa500;
+    color: #000;
+}
+#checkMidRhymes{
+    background-color: #ffa500;
+    color: #000;
+}
